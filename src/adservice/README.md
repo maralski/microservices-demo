@@ -23,6 +23,20 @@ If you need to upgrade the version of gradle then run
 From `src/adservice/`, run:
 
 ```
-docker build ./
+docker build -t adservice .
+```
+
+Can pass `NEWRELIC_AGENT_DOWNLOAD` as `--build-arg` pointing to agent URL to download.
+
+## Running docker image
+
+```
+docker run \
+ -p 9555:9555 \
+ -e NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY \
+ -e NEW_RELIC_APP_NAME="adservice" \
+ -e NEW_RELIC_LOG_FILE_NAME=STDOUT \
+ -e JAVA_OPTS="-javaagent:/app/newrelic/newrelic.jar" \
+ adservice
 ```
 

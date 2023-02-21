@@ -30,14 +30,21 @@ FROM eclipse-temurin:19.0.1_10-jre-alpine@sha256:a75ea64f676041562cd7d3a54a9764b
 RUN apk add --no-cache ca-certificates
 
 # Download Stackdriver Profiler Java agent
-RUN mkdir -p /opt/cprof && \
-    wget -q -O- https://storage.googleapis.com/cloud-profiler/java/latest/profiler_java_agent_alpine.tar.gz \
-    | tar xzv -C /opt/cprof && \
-    rm -rf profiler_java_agent.tar.gz
+# RUN mkdir -p /opt/cprof && \
+#     wget -q -O- https://storage.googleapis.com/cloud-profiler/java/latest/profiler_java_agent_alpine.tar.gz \
+#     | tar xzv -C /opt/cprof && \
+#     rm -rf profiler_java_agent.tar.gz
 
 WORKDIR /app
 COPY --from=builder /app .
 
+# Download New Relic Java agent
+ARG NEWRELIC_AGENT_DOWNLOAD
+ENV NEWRELIC_AGENT_DOWNLOAD=${NEWRELIC_AGENT_DOWNLOAD:-https://download.newrelic.com/newrelic/java-agent/newrelic-agent/8.0.0/newrelic-java.zip}
+RUN wget -q $NEWRELIC_AGENT_DOWNLOAD -O newrelic.zip
+RUN unzip -q newrelic.zip
+RUN rm -f newrelic.zip
+    
 EXPOSE 9555
 ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]
 
