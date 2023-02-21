@@ -43,6 +43,12 @@ COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
 
 # Add the application
 COPY . .
+RUN chmod +x recommendation_server.py
+
+# Install New Relic Python agent
+ARG NEWRELIC_AGENT_VERSION
+ENV NEWRELIC_AGENT_VERSION=${NEWRELIC_AGENT_VERSION:-8.7.0}
+RUN pip install newrelic==$NEWRELIC_AGENT_VERSION
 
 # set listen port
 ENV PORT "8080"
