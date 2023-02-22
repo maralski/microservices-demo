@@ -39,7 +39,7 @@ COPY . .
 
 EXPOSE 50051
 
-ENTRYPOINT [ "node", "index.js" ]
+ENTRYPOINT [ "node", "-r", "newrelic", "index.js" ]
 
 FROM without-grpc-health-probe-bin
 
