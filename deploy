@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+if [ -z "$NEW_RELIC_LICENSE_KEY" ]; then
+  echo "NEW_RELIC_LICENSE_KEY is not set"
+  exit 1
+fi
+
+IMAGES=$1
+NAMESPACE=store
+
+if [ -z "$IMAGES" ]; then
+	IMAGES="redis adservice cartservice checkoutservice currencyservice emailservice frontend paymentservice productcatalogservice recommendationservice shippingservice"
+fi
+
+kubectl get namespaces $NAMESPACE > /dev/null
+if [ $? -eq 1 ]; then
+  echo Creating namespace $NAMESPACE
+  kubectl create namespace $Namespace
+fi
+
+kubectl -n $NAMESPACE get secrets newrelic-key > /dev/null
+if [ $? -eq 1 ]; then
+  echo Creating NEW_RELIC_LICENSE_KEY secret
+  kubectl -n $NAMESPACE create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
+fi
+
+for SERVICE in $IMAGES
+do
+  echo Deploying $SERVICE
+  kubectl -n store apply -f kubernetes-manifests/$SERVICE.yaml
+done

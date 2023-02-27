@@ -66,7 +66,7 @@ type checkoutService struct {
 }
 
 func main() {
-	log := logrus.New()
+	log = logrus.New()
 	log.SetLevel(logrus.TraceLevel)
 
 	app, err := newrelic.NewApplication(
