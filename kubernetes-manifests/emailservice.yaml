@@ -28,7 +28,7 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
-      - name: server
+      - name: emailservice
         image: pmarelas288/emailservice
         ports:
         - containerPort: 8080

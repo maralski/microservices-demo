@@ -28,7 +28,7 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
-      - name: server
+      - name: productcatalogservice
         image: pmarelas288/productcatalogservice
         ports:
         - containerPort: 3550

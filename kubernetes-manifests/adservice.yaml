@@ -28,7 +28,7 @@ spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
       containers:
-      - name: server
+      - name: adservice
         image: pmarelas288/adservice
         env:
         - name: NEW_RELIC_LICENSE_KEY
