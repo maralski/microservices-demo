@@ -26,35 +26,32 @@ spec:
         app: shippingservice
     spec:
       serviceAccountName: default
-      securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        runAsUser: 1000
       containers:
       - name: server
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - all
-          privileged: false
-          readOnlyRootFilesystem: true
-        image: shippingservice
+        image: pmarelas288/shippingservice
         ports:
         - containerPort: 50051
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: NEW_RELIC_APP_NAME
+          value: "store-shippingservice"
+        - name: NEW_RELIC_LOG
+          value: "stdout"
+        - name: NEW_RELIC_LOG_LEVEL
+          value: "info"
         - name: PORT
           value: "50051"
-        - name: DISABLE_PROFILER
-          value: "1"
         readinessProbe:
-          periodSeconds: 5
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:50051"]
+          periodSeconds: 15
+          grpc:
+            port: 50051
         livenessProbe:
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:50051"]
+          grpc:
+            port: 50051
         resources:
           requests:
             cpu: 100m

@@ -20,23 +20,25 @@ import (
 	"net/http"
 	"os"
 	"time"
+
 	"github.com/gorilla/mux"
-	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
+	"github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus"
 	"github.com/newrelic/go-agent/v3/integrations/nrgorilla"
 	"github.com/newrelic/go-agent/v3/integrations/nrgrpc"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus"
+	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 )
 
 const (
-	port            = "8080"
-	defaultCurrency = "USD"
-	cookieMaxAge    = 60 * 60 * 48
-	cookiePrefix    = "shop_"
-	cookieSessionID = cookiePrefix + "session-id"
-	cookieCurrency  = cookiePrefix + "currency"
+	port              = "8080"
+	defaultCurrency   = "USD"
+	cookieMaxAge      = 60 * 60 * 48
+	cookiePrefix      = "shop_"
+	cookieSessionID   = cookiePrefix + "session-id"
+	cookieCurrency    = cookiePrefix + "currency"
+	waitForConnection = 5
 )
 
 var (
@@ -78,20 +80,32 @@ type frontendServer struct {
 }
 
 func main() {
-
-	app, err := newrelic.NewApplication(newrelic.ConfigFromEnvironment())
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-    }
-
-	ctx := context.Background()
 	log := logrus.New()
+	log.SetLevel(logrus.TraceLevel)
+
+	app, err := newrelic.NewApplication(
+		newrelic.ConfigFromEnvironment(),
+		newrelic.ConfigAppLogDecoratingEnabled(true),
+		newrelic.ConfigAppLogForwardingEnabled(false),
+	)
+
+	if err != nil {
+		log.Panic(err)
+	}
+
 	nrlogrusFormatter := nrlogrus.NewFormatter(app, &logrus.TextFormatter{})
 	log.SetFormatter(nrlogrusFormatter)
-	log.Level = logrus.DebugLevel
-	log.Out = os.Stdout
-	log.Debug("Logger created")
+
+	log.Debug("Application created, waiting for connection")
+
+	err = app.WaitForConnection(waitForConnection * time.Second)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	log.Info("Application connected")
+
+	ctx := context.Background()
 
 	svc := new(frontendServer)
 
@@ -132,8 +146,8 @@ func main() {
 	r.HandleFunc("/_healthz", func(w http.ResponseWriter, _ *http.Request) { fmt.Fprint(w, "ok") })
 
 	var handler http.Handler = r
-	handler = &logHandler{log: log, next: handler}     // add logging
-	handler = ensureSessionID(handler)                 // add session ID
+	handler = &logHandler{log: log, next: handler} // add logging
+	handler = ensureSessionID(handler)             // add session ID
 
 	log.Infof("starting server on " + addr + ":" + srvPort)
 	log.Fatal(http.ListenAndServe(addr+":"+srvPort, handler))

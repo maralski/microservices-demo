@@ -22,6 +22,10 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
+RUN go get github.com/newrelic/go-agent/v3/newrelic
+RUN go get github.com/newrelic/go-agent/v3/integrations/nrgrpc
+RUN go get github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus
+
 # Skaffold passes in debug-oriented compiler flags
 ARG SKAFFOLD_GO_GCFLAGS
 RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /go/bin/shippingservice .

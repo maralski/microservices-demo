@@ -2,24 +2,12 @@
 <img src="src/frontend/static/icons/Hipster_HeroLogoMaroon.svg" width="300" alt="Online Boutique" />
 </p>
 
-
-![Continuous Integration](https://github.com/GoogleCloudPlatform/microservices-demo/workflows/Continuous%20Integration%20-%20Main/Release/badge.svg)
-
 **Online Boutique** is a cloud-first microservices demo application.
 Online Boutique consists of an 11-tier microservices application. The application is a
 web-based e-commerce app where users can browse items,
 add them to the cart, and purchase them.
 
-**Google uses this application to demonstrate use of technologies like
-Kubernetes/GKE, Istio, Stackdriver, and gRPC**. This application
-works on any Kubernetes cluster, as well as Google
-Kubernetes Engine. It’s **easy to deploy with little to no configuration**.
-
-If you’re using this demo, please **★Star** this repository to show your interest!
-
-> 👓**Note to Googlers (Google employees):** Please fill out the form at
-> [go/microservices-demo](http://go/microservices-demo) if you are using this
-> application.
+This version of the repository has been adapted to demonstrate how to instrument **Online Boutique** using **New Relic Application Performance Monitoring** and **New Relic Kubernetes Monitoring**.
 
 ## Screenshots
 

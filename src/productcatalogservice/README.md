@@ -36,3 +36,24 @@ This service has an `EXTRA_LATENCY` environment variable. This will inject a sle
 to the server.
 
 For example, use `EXTRA_LATENCY="5.5s"` to sleep for 5.5 seconds on every request.
+
+## Building docker image
+
+From `src/productcatalogservice/`, run:
+
+```
+docker build -t productcatalogservice .
+```
+
+## Running docker image
+
+```
+docker run \
+-p 3550:3550 \
+-e PORT=3550 \
+-e NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY \
+-e NEW_RELIC_APP_NAME="productcatalogservice" \
+-e NEW_RELIC_LOG=stdout \
+-e NEW_RELIC_LOG_LEVEL=debug \
+productcatalogservice
+```

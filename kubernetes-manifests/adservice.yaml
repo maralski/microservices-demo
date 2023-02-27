@@ -27,26 +27,27 @@ spec:
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5
-      securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        runAsUser: 1000
       containers:
       - name: server
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - all
-          privileged: false
-          readOnlyRootFilesystem: true
-        image: adservice
-        ports:
-        - containerPort: 9555
+        image: pmarelas288/adservice
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
         - name: PORT
           value: "9555"
+        - name: NEW_RELIC_APP_NAME
+          value: "store-adservice"
+        - name: NEW_RELIC_LOG_FILE_NAME
+          value: "STDOUT"
+        - name: NEW_RELIC_LOG_LEVEL
+          value: "debug"
+        - name: JAVA_OPTS
+          value: "-javaagent:/app/newrelic/newrelic.jar"
+        ports:
+        - containerPort: 9555
         resources:
           requests:
             cpu: 200m
@@ -54,16 +55,24 @@ spec:
           limits:
             cpu: 300m
             memory: 300Mi
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          grpc:
+            port: 9555
         readinessProbe:
-          initialDelaySeconds: 20
+          initialDelaySeconds: 30
           periodSeconds: 15
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:9555"]
+          timeoutSeconds: 5
+          grpc:
+            port: 9555
         livenessProbe:
-          initialDelaySeconds: 20
+          initialDelaySeconds: 30
           periodSeconds: 15
-          exec:
-            command: ["/bin/grpc_health_probe", "-addr=:9555"]
+          timeoutSeconds: 5
+          grpc:
+            port: 9555
 ---
 apiVersion: v1
 kind: Service

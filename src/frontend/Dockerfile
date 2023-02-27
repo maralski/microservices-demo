@@ -27,6 +27,7 @@ RUN go get github.com/newrelic/go-agent/v3/integrations/nrgorilla
 RUN go get github.com/newrelic/go-agent/v3/integrations/nrgrpc
 RUN go get github.com/newrelic/go-agent/v3/integrations/nrpkgerrors
 RUN go get github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus
+RUN go get github.com/newrelic/go-agent/v3/integrations/nrlogrus
 
 # Skaffold passes in debug-oriented compiler flags
 ARG SKAFFOLD_GO_GCFLAGS

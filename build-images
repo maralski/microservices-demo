@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+CURRENT=$PWD
+REPO=pmarelas288
+
+for SERVICE in adservice cartservice checkoutservice \
+			currencyservice emailservice frontend \
+			loadgenerator paymentservice productcatalogservice \
+			recommendationservice shippingservice
+do
+	cd $CURRENT
+	cd src/$SERVICE
+	docker build -t $REPO/$SERVICE .
+	docker push $REPO/$SERVICE
+done

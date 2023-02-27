@@ -28,21 +28,9 @@ spec:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
       serviceAccountName: default
-      securityContext:
-        fsGroup: 1000
-        runAsGroup: 1000
-        runAsNonRoot: true
-        runAsUser: 1000
       containers:
         - name: server
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - all
-            privileged: false
-            readOnlyRootFilesystem: true
-          image: frontend
+          image: pmarelas288/frontend
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -62,6 +50,17 @@ spec:
               - name: "Cookie"
                 value: "shop_session-id=x-liveness-probe"
           env:
+          - name: NEW_RELIC_LICENSE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: newrelic-key
+                key: new-relic-license-key
+          - name: NEW_RELIC_APP_NAME
+            value: "store-frontend"
+          - name: NEW_RELIC_LOG
+            value: "stdout"
+          - name: NEW_RELIC_LOG_LEVEL
+            value: "info"
           - name: PORT
             value: "8080"
           - name: PRODUCT_CATALOG_SERVICE_ADDR
@@ -82,8 +81,6 @@ spec:
           # # When not set, defaults to "local" unless running in GKE, otherwies auto-sets to gcp 
           # - name: ENV_PLATFORM 
           #   value: "aws"
-          - name: ENABLE_PROFILER
-            value: "0"
           # - name: CYMBAL_BRANDING
           #   value: "true"
           resources:

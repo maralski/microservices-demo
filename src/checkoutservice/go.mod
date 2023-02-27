@@ -29,6 +29,9 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
+	github.com/newrelic/go-agent/v3 v3.20.3
+	github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus v1.0.0
+	github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.3.2
 	go.opencensus.io v0.23.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.11.2 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.11.2 // indirect
