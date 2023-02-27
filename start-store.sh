@@ -13,37 +13,37 @@ kubectl create namespace store
 echo Creating NEW_RELIC_LICENSE_KEY secret
 kubectl -n store create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
 
-echo Deploying `redis`
+echo Deploying redis
 kubectl -n store apply -f kubernetes-manifests/redis.yaml
 
-echo Deploying `adservice`
+echo Deploying adservice
 kubectl -n store apply -f kubernetes-manifests/adservice.yaml
 
-echo Deploying `cartservice`
+echo Deploying cartservice
 kubectl -n store apply -f kubernetes-manifests/cartservice.yaml
 
-echo Deploying `emailservice`
+echo Deploying emailservice
 kubectl -n store apply -f kubernetes-manifests/emailservice.yaml
 
-echo Deploying `currencyservice`
+echo Deploying currencyservice
 kubectl -n store apply -f kubernetes-manifests/currencyservice.yaml
 
-echo Deploying `paymentservice`
+echo Deploying paymentservice
 kubectl -n store apply -f kubernetes-manifests/paymentservice.yaml
 
-echo Deploying `productcatalogservice`
+echo Deploying productcatalogservice
 kubectl -n store apply -f kubernetes-manifests/productcatalogservice.yaml
 
-echo Deploying `recommendationservice`
+echo Deploying recommendationservice
 kubectl -n store apply -f kubernetes-manifests/recommendationservice.yaml
 
-echo Deploying `shippingservice`
+echo Deploying shippingservice
 kubectl -n store apply -f kubernetes-manifests/shippingservice.yaml
 
-echo Deploying `checkoutservice`
+echo Deploying checkoutservice
 kubectl -n store apply -f kubernetes-manifests/checkoutservice.yaml
 
-echo Deploying `frontend`
+echo Deploying frontend
 kubectl -n store apply -f kubernetes-manifests/frontend.yaml
 
 echo All services deployed
