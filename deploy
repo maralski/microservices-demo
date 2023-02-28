@@ -15,7 +15,7 @@ fi
 kubectl get namespaces $NAMESPACE > /dev/null
 if [ $? -eq 1 ]; then
   echo Creating namespace $NAMESPACE
-  kubectl create namespace $Namespace
+  kubectl create namespace $NAMESPACE
 fi
 
 kubectl -n $NAMESPACE get secrets newrelic-key > /dev/null
