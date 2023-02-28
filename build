@@ -5,7 +5,7 @@ REPO=pmarelas288
 IMAGES=$1
 
 if [ -z "$IMAGES" ]; then
-	IMAGES="adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
+	IMAGES="loadgenerator adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
 fi
 
 for SERVICE in $IMAGES

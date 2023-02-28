@@ -57,7 +57,7 @@ spec:
         image: busybox:latest
         env:
         - name: FRONTEND_ADDR
-          value: "frontend:80"
+          value: "frontend:8081"
       containers:
       - name: loadgenerator
         securityContext:
@@ -67,10 +67,10 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: loadgenerator
+        image: pmarelas288/loadgenerator
         env:
         - name: FRONTEND_ADDR
-          value: "frontend:80"
+          value: "frontend:8081"
         - name: USERS
           value: "10"
         resources:
