@@ -215,7 +215,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-k8s-stability-condition" {
   slide_by                       = 30
 
   nrql {
-    query = "FROM K8sReplicasetSample select latest(podsDesired) - latest(podsReady) facet replicasetName, deploymentName"
+    query = "FROM K8sReplicasetSample select latest(podsDesired) - latest(podsReady) facet clusterName, deploymentName"
   }
 
   critical {
