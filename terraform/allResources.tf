@@ -195,13 +195,12 @@ resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
   }
 }
 
-
-resource "newrelic_nrql_alert_condition" "ms-demo-k8s-stability-condition" {
+resource "newrelic_nrql_alert_condition" "ms-demo-pod-stability-condition" {
   account_id                     = var.NEW_RELIC_ACCOUNT_ID
   policy_id                      = newrelic_alert_policy.ms-demo-obs-alert-policy.id
   type                           = "static"
-  name                           = "Cluster Stability"
-  description                    = "Alert when PODs desired are higher than PODs ready"
+  name                           = "POD Stability"
+  description                    = "Alert when PODs are unstable"
   enabled                        = true
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
@@ -215,12 +214,54 @@ resource "newrelic_nrql_alert_condition" "ms-demo-k8s-stability-condition" {
   slide_by                       = 30
 
   nrql {
-    query = "FROM K8sReplicasetSample select latest(podsDesired) - latest(podsReady) facet clusterName, deploymentName"
+    query = "from K8sPodSample SELECT latest(isReady) facet podName"
+  }
+
+  critical {
+    operator              = "equals"
+    threshold             = 0
+    threshold_duration    = 300
+    threshold_occurrences = "ALL"
+  }
+  warning {
+    operator              = "equals"
+    threshold             = 0
+    threshold_duration    = 120
+    threshold_occurrences = "ALL"
+  }
+}
+
+resource "newrelic_nrql_alert_condition" "ms-demo-container-stability-condition" {
+  account_id                     = var.NEW_RELIC_ACCOUNT_ID
+  policy_id                      = newrelic_alert_policy.ms-demo-obs-alert-policy.id
+  type                           = "static"
+  name                           = "Container Stability"
+  description                    = "Alert when Containers consume more CPU"
+  enabled                        = true
+  violation_time_limit_seconds   = 3600
+  fill_option                    = "static"
+  fill_value                     = 1.0
+  aggregation_window             = 60
+  aggregation_method             = "event_flow"
+  aggregation_delay              = 120
+  expiration_duration            = 120
+  open_violation_on_expiration   = true
+  close_violations_on_expiration = true
+  slide_by                       = 30
+
+  nrql {
+    query = "from K8sContainerSample SELECT average(cpuCoresUtilization) facet containerID"
   }
 
   critical {
     operator              = "above"
-    threshold             = 0
+    threshold             = 50
+    threshold_duration    = 120
+    threshold_occurrences = "ALL"
+  }
+  warning {
+    operator              = "above"
+    threshold             = 40
     threshold_duration    = 120
     threshold_occurrences = "ALL"
   }
