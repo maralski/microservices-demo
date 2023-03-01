@@ -18,7 +18,7 @@ resource "newrelic_workload" "ms-demo-workload" {
     name = "Online-Boutique Store Workload"
     account_id = var.NEW_RELIC_ACCOUNT_ID
     entity_search_query {
-        query = "(name like '%store-%' AND type = 'APPLICATION') OR ((type = 'KUBERNETES_POD' OR type ='CONTAINER') AND namespace = 'store')" 
+        query = "(name like '%store-%' AND type = 'APPLICATION') OR (type = 'KUBERNETES_POD' AND `tags.namespace` = 'store') OR (type ='CONTAINER' AND `tags.namespace` = 'store')" 
     }
 
     scope_account_ids =  [var.NEW_RELIC_ACCOUNT_ID]
