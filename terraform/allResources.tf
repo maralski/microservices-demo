@@ -177,7 +177,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
   slide_by                       = 30
 
   nrql {
-    query = "SELECT average(duration) FROM Transaction where (appName = 'store-productcatalogservice' OR appName = 'store-frontend') FACET appName"
+    query = "SELECT average(duration) FROM Transaction where (appName = 'store-productcatalogservice' OR appName = 'store-frontend' OR appName = 'store-adservice' OR appName = 'store-cartservice' OR appName = 'store-checkoutservice' OR appName = 'store-currencyservice' OR appName = 'store-emailservice' OR appName = 'store-paymentservice' OR appName = 'store-recommendationservice' OR appName = 'store-shippingservice') FACET appName"
   }
 
   critical {
