@@ -36,6 +36,10 @@ logger = getJSONLogger('recommendationservice-server')
 
 class RecommendationService(demo_pb2_grpc.RecommendationServiceServicer):
     def ListRecommendations(self, request, context):
+        if 'RANDOM_ERROR' in os.environ:
+            if random.random() > (1-float(os.environ['RANDOM_ERROR'])):
+                raise Exception('Unhandled exception in ListRecommendations')
+
         max_responses = 5
         # fetch list of products from product catalog stub
         cat_response = product_catalog_stub.ListProducts(demo_pb2.Empty())
