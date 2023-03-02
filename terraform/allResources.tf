@@ -266,3 +266,38 @@ resource "newrelic_nrql_alert_condition" "ms-demo-container-stability-condition"
     threshold_occurrences = "ALL"
   }
 }
+
+
+data "newrelic_entity" "ms-demo-cartservice-app" {
+  name = "store-cartservice"
+  domain = "APM"
+  type = "APPLICATION"
+}
+
+resource "newrelic_service_level" "ms-demo-additem-latency-sl" {
+  guid = "${data.newrelic_entity.ms-demo-cartservice-app.guid}"
+    name = "Online-Boutique Add Item Key Txn Latency SL"
+    description = "Proportion of requests that are served faster than a threshold."
+
+    events {
+        account_id = var.NEW_RELIC_ACCOUNT_ID
+        valid_events {
+            from = "Transaction"
+            where = "name = 'WebTransaction/ASP/hipstershop.CartService/AddItem'"
+        }
+        good_events {
+            from = "Transaction"
+            where = "name = 'WebTransaction/ASP/hipstershop.CartService/AddItem' AND duration < 0.005"
+        }
+    }
+
+    objective {
+        target = 99.5
+        time_window {
+            rolling {
+                count = 1
+                unit = "DAY"
+            }
+        }
+    }
+}
