@@ -41,7 +41,7 @@ spec:
         - name: NEW_RELIC_APP_NAME
           value: "store-productcatalogservice"
         - name: NEW_RELIC_LOG_LEVEL
-          value: "debug"
+          value: "info"
         - name: NEW_RELIC_LOG
           value: "stdout"
         - name: PORT
