@@ -43,7 +43,13 @@ spec:
         - name: NEW_RELIC_LOG_FILE_NAME
           value: "STDOUT"
         - name: NEW_RELIC_LOG_LEVEL
-          value: "debug"
+          value: "info"
+        - name: NEW_RELIC_APPLICATION_LOGGING_ENABLED
+          value: "true"
+        - name: NEW_RELIC_APPLICATION_LOGGING_LOCAL_DECORATING_ENABLED
+          value: "true"
+        - name: NEW_RELIC_APPLICATION_LOGGING_FORWARDING_ENABLED
+          value: "false"
         - name: JAVA_OPTS
           value: "-javaagent:/app/newrelic/newrelic.jar"
         ports:
