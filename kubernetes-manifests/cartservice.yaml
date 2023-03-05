@@ -24,6 +24,8 @@ spec:
     metadata:
       labels:
         app: cartservice
+      annotations:
+        fluentbit.io/exclude: "true"
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5

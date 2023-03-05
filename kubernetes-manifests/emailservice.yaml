@@ -24,6 +24,8 @@ spec:
     metadata:
       labels:
         app: emailservice
+      annotations:
+        fluentbit.io/exclude: "true"
     spec:
       serviceAccountName: default
       terminationGracePeriodSeconds: 5

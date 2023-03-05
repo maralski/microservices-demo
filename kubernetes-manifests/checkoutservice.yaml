@@ -24,6 +24,8 @@ spec:
     metadata:
       labels:
         app: checkoutservice
+      annotations:
+        fluentbit.io/exclude: "true"
     spec:
       serviceAccountName: default
       containers:
