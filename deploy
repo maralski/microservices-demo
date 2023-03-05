@@ -5,7 +5,7 @@ if [ -z "$NEW_RELIC_LICENSE_KEY" ]; then
   exit 1
 fi
 
-IMAGES=$1
+IMAGES=$@
 NAMESPACE=store
 
 if [ -z "$IMAGES" ]; then

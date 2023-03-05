@@ -85,8 +85,8 @@ func main() {
 
 	app, err := newrelic.NewApplication(
 		newrelic.ConfigFromEnvironment(),
-		newrelic.ConfigAppLogDecoratingEnabled(true),
-		newrelic.ConfigAppLogForwardingEnabled(false),
+		newrelic.ConfigAppLogForwardingEnabled(true),
+		newrelic.ConfigAppLogDecoratingEnabled(false),
 	)
 
 	if err != nil {

@@ -2,7 +2,7 @@
 
 CURRENT=$PWD
 REPO=pmarelas288
-IMAGES=$1
+IMAGES=$@
 
 if [ -z "$IMAGES" ]; then
 	IMAGES="loadgenerator loadgeneratorredis adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
