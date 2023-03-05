@@ -40,6 +40,14 @@ spec:
               key: new-relic-license-key
         - name: NEW_RELIC_APP_NAME
           value: "store-cartservice"
+        - name: NEW_RELIC_APPLICATION_LOGGING_ENABLED
+          value: "true"
+        - name: NEW_RELIC_APPLICATION_LOGGING_FORWARDING_ENABLED
+          value: "true"
+        - name: NEW_RELIC_APPLICATION_LOGGING_FORWARDING_CONTEXT_DATA_ENABLED
+          value: "true"
+        - name: NEW_RELIC_APPLICATION_LOGGING_LOCAL_DECORATING_ENABLED
+          value: "false"
         - name: REDIS_ADDR
           value: "redis-cart:6379"
         resources:
