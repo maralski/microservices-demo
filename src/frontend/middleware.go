@@ -56,19 +56,23 @@ func (r *responseRecorder) WriteHeader(statusCode int) {
 
 func (lh *logHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
 	requestID, _ := uuid.NewRandom()
 	ctx = context.WithValue(ctx, ctxKeyRequestID{}, requestID.String())
 
 	start := time.Now()
 	rr := &responseRecorder{w: w}
+	
 	log := lh.log.WithFields(logrus.Fields{
 		"http.req.path":   r.URL.Path,
 		"http.req.method": r.Method,
 		"http.req.id":     requestID.String(),
 	})
+	
 	if v, ok := r.Context().Value(ctxKeySessionID{}).(string); ok {
 		log = log.WithField("session", v)
 	}
+
 	log.Debug("request started")
 	defer func() {
 		log.WithFields(logrus.Fields{

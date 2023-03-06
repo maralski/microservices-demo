@@ -77,6 +77,9 @@ type frontendServer struct {
 
 	collectorAddr string
 	collectorConn *grpc.ClientConn
+
+	app *newrelic.Application
+	log *logrus.Logger
 }
 
 func main() {
@@ -102,12 +105,12 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-
-	log.Info("Application connected")
-
+	
 	ctx := context.Background()
 
 	svc := new(frontendServer)
+	svc.app = app
+	svc.log = log
 
 	srvPort := port
 	if os.Getenv("PORT") != "" {
@@ -151,6 +154,8 @@ func main() {
 
 	log.Infof("starting server on " + addr + ":" + srvPort)
 	log.Fatal(http.ListenAndServe(addr+":"+srvPort, handler))
+
+	app.Shutdown(5 * time.Second)
 }
 
 func mustMapEnv(target *string, envKey string) {

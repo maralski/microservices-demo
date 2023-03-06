@@ -14,5 +14,9 @@ do
 	cd $CURRENT
 	cd src/$SERVICE
 	docker build -t $REPO/$SERVICE .
+	if [ $? -ne 0 ]; then
+		echo "##### Failed to build $SERVICE #####"
+		exit 1
+	fi
 	docker push $REPO/$SERVICE
 done
