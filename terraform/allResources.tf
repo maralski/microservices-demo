@@ -18,7 +18,7 @@ resource "newrelic_workload" "ms-demo-workload" {
     name = "Online-Boutique Store Workload"
     account_id = var.NEW_RELIC_ACCOUNT_ID
     entity_search_query {
-        query = "(name like '%store-%' AND type = 'APPLICATION') OR (type = 'KUBERNETES_POD' AND `tags.namespace` = 'store') OR (type ='CONTAINER' AND `tags.namespace` = 'store') or type = 'KEY_TRANSACTION'" 
+        query = "(name like '%store-%' AND type = 'APPLICATION') OR (type = 'KUBERNETES_POD' AND `tags.namespace` = 'store') OR (type ='CONTAINER' AND `tags.namespace` = 'store') or type = 'KEY_TRANSACTION' or type = 'KUBERNETES_CLUSTER'" 
     }
 
     scope_account_ids =  [var.NEW_RELIC_ACCOUNT_ID]
@@ -227,6 +227,36 @@ resource "newrelic_nrql_alert_condition" "ms-demo-pod-stability-condition" {
     operator              = "equals"
     threshold             = 0
     threshold_duration    = 120
+    threshold_occurrences = "ALL"
+  }
+}
+
+resource "newrelic_nrql_alert_condition" "ms-demo-cluster-stability-condition" {
+  account_id                     = var.NEW_RELIC_ACCOUNT_ID
+  policy_id                      = newrelic_alert_policy.ms-demo-obs-alert-policy.id
+  type                           = "static"
+  name                           = "Cluster Stability"
+  description                    = "Alert when Cluster is unstable"
+  enabled                        = true
+  violation_time_limit_seconds   = 3600
+  fill_option                    = "static"
+  fill_value                     = 0
+  aggregation_window             = 60
+  aggregation_method             = "event_flow"
+  aggregation_delay              = 60
+  expiration_duration            = 60
+  open_violation_on_expiration   = true
+  close_violations_on_expiration = true
+  slide_by                       = 30
+
+  nrql {
+    query = "SELECT uniqueCount(host) from K8sClusterSample where hostStatus != 'running' facet hostStatus, clusterName"
+  }
+
+  critical {
+    operator              = "above"
+    threshold             = 0
+    threshold_duration    = 300
     threshold_occurrences = "ALL"
   }
 }
