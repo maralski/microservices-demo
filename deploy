@@ -12,13 +12,13 @@ if [ -z "$IMAGES" ]; then
 	IMAGES="redis adservice cartservice checkoutservice currencyservice emailservice frontend paymentservice productcatalogservice recommendationservice shippingservice loadgenerator"
 fi
 
-kubectl get namespaces $NAMESPACE > /dev/null
+kubectl get namespaces $NAMESPACE > /dev/null 2>&1
 if [ $? -eq 1 ]; then
   echo Creating namespace $NAMESPACE
   kubectl create namespace $NAMESPACE
 fi
 
-kubectl -n $NAMESPACE get secrets newrelic-key > /dev/null
+kubectl -n $NAMESPACE get secrets newrelic-key > /dev/null 2>&1
 if [ $? -eq 1 ]; then
   echo Creating NEW_RELIC_LICENSE_KEY secret
   kubectl -n $NAMESPACE create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
