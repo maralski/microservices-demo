@@ -168,9 +168,9 @@ resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 1.0
-  aggregation_window             = 60
+  aggregation_window             = 30
   aggregation_method             = "event_flow"
-  aggregation_delay              = 120
+  aggregation_delay              = 30
   expiration_duration            = 120
   open_violation_on_expiration   = true
   close_violations_on_expiration = true
@@ -183,14 +183,14 @@ resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
   critical {
     operator              = "above"
     threshold             = 1
-    threshold_duration    = 300
+    threshold_duration    = 120
     threshold_occurrences = "ALL"
   }
 
   warning {
     operator              = "above"
     threshold             = 0.5
-    threshold_duration    = 300
+    threshold_duration    = 120
     threshold_occurrences = "ALL"
   }
 }
@@ -205,9 +205,9 @@ resource "newrelic_nrql_alert_condition" "ms-demo-pod-stability-condition" {
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 1.0
-  aggregation_window             = 60
+  aggregation_window             = 30
   aggregation_method             = "event_flow"
-  aggregation_delay              = 120
+  aggregation_delay              = 30
   expiration_duration            = 120
   open_violation_on_expiration   = true
   close_violations_on_expiration = true
@@ -241,9 +241,9 @@ resource "newrelic_nrql_alert_condition" "ms-demo-cluster-stability-condition" {
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 0
-  aggregation_window             = 60
+  aggregation_window             = 30
   aggregation_method             = "event_flow"
-  aggregation_delay              = 60
+  aggregation_delay              = 30
   expiration_duration            = 60
   open_violation_on_expiration   = true
   close_violations_on_expiration = true
@@ -271,9 +271,9 @@ resource "newrelic_nrql_alert_condition" "ms-demo-container-stability-condition"
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 1.0
-  aggregation_window             = 60
+  aggregation_window             = 30
   aggregation_method             = "event_flow"
-  aggregation_delay              = 120
+  aggregation_delay              = 30
   expiration_duration            = 120
   open_violation_on_expiration   = true
   close_violations_on_expiration = true
