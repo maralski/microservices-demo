@@ -53,7 +53,7 @@ spec:
           periodSeconds: 30
           timeoutSeconds: 10
           grpc:
-            port: 8000
+            port: 8080
         readinessProbe:
           periodSeconds: 30
           timeoutSeconds: 10
