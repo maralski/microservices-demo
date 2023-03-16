@@ -48,10 +48,20 @@ spec:
           value: "stdout"
         - name: PORT
           value: "3550"
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          grpc:
+            port: 3550
         readinessProbe:
+          periodSeconds: 30
+          timeoutSeconds: 10
           grpc:
             port: 3550
         livenessProbe:
+          periodSeconds: 30
+          timeoutSeconds: 10
           grpc:
             port: 3550
         resources:

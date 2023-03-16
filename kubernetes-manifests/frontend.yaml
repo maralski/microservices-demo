@@ -33,8 +33,19 @@ spec:
           image: pmarelas288/frontend
           ports:
           - containerPort: 8080
+          startupProbe:
+            failureThreshold: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+            httpGet:
+              path: "/_healthz"
+              port: 8080
+              httpHeaders:
+              - name: "Cookie"
+                value: "shop_session-id=x-readiness-probe"
           readinessProbe:
-            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
             httpGet:
               path: "/_healthz"
               port: 8080
@@ -42,7 +53,8 @@ spec:
               - name: "Cookie"
                 value: "shop_session-id=x-readiness-probe"
           livenessProbe:
-            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
             httpGet:
               path: "/_healthz"
               port: 8080
@@ -77,12 +89,6 @@ spec:
             value: "checkoutservice:5050"
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
-          # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
-          # # When not set, defaults to "local" unless running in GKE, otherwies auto-sets to gcp 
-          # - name: ENV_PLATFORM 
-          #   value: "aws"
-          # - name: CYMBAL_BRANDING
-          #   value: "true"
           resources:
             requests:
               cpu: 100m

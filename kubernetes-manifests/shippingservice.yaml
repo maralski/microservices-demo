@@ -47,11 +47,20 @@ spec:
           value: "info"
         - name: PORT
           value: "50051"
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          grpc:
+            port: 50051
         readinessProbe:
-          periodSeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 10
           grpc:
             port: 50051
         livenessProbe:
+          periodSeconds: 30
+          timeoutSeconds: 10
           grpc:
             port: 50051
         resources:

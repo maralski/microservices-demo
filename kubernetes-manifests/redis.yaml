@@ -30,12 +30,20 @@ spec:
         image: redis:alpine
         ports:
         - containerPort: 6379
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          tcpSocket:
+            port: 6379
         readinessProbe:
-          periodSeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
           tcpSocket:
             port: 6379
         livenessProbe:
-          periodSeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
           tcpSocket:
             port: 6379
         volumeMounts:

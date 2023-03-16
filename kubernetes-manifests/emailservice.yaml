@@ -48,14 +48,20 @@ spec:
           value: "stderr"
         - name: NEW_RELIC_LOG_LEVEL
           value: "debug"
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          grpc:
+            port: 8000
         readinessProbe:
-          periodSeconds: 5
-          timeoutSeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
           grpc:
             port: 8080
         livenessProbe:
-          periodSeconds: 5
-          timeoutSeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 10
           grpc:
             port: 8080
         resources:
