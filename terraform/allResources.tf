@@ -168,7 +168,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 1.0
-  aggregation_window             = 30
+  aggregation_window             = 60
   aggregation_method             = "event_flow"
   aggregation_delay              = 30
   expiration_duration            = 120
@@ -205,7 +205,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-pod-stability-condition" {
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 1.0
-  aggregation_window             = 30
+  aggregation_window             = 60
   aggregation_method             = "event_flow"
   aggregation_delay              = 30
   expiration_duration            = 120
@@ -241,7 +241,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-cluster-stability-condition" {
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 0
-  aggregation_window             = 30
+  aggregation_window             = 60
   aggregation_method             = "event_flow"
   aggregation_delay              = 30
   expiration_duration            = 60
@@ -271,7 +271,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-container-stability-condition"
   violation_time_limit_seconds   = 3600
   fill_option                    = "static"
   fill_value                     = 1.0
-  aggregation_window             = 30
+  aggregation_window             = 60
   aggregation_method             = "event_flow"
   aggregation_delay              = 30
   expiration_duration            = 120
