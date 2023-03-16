@@ -91,13 +91,13 @@ def nerdgraph_createkeytxn_paymentapp(key):
     raise Exception(f'Nerdgraph query failed with a {response.status_code}.')
 
 
-def nerdgraph_getappguid(key,appName):
+def nerdgraph_getappguid(key,appName,accountId):
   # GraphQL query to NerdGraph
   global app_guid
   query = """
   {
   actor {
-    entitySearch(queryBuilder: {name: \"""" + appName + """\"}) {
+    entitySearch(queryBuilder: {name: \"""" + appName + """\", tags: {key: "accountId", value: \"""" + accountId + """\"}}) {
       count
       query
       results {
@@ -127,9 +127,9 @@ cartapp_name = "store-cartservice"
 checkoutapp_name = "store-checkoutservice"
 paymentapp_name = "store-paymentservice"
 
-nerdgraph_getappguid(os.environ['TF_VAR_NEW_RELIC_API_KEY'],cartapp_name)
+nerdgraph_getappguid(os.environ['TF_VAR_NEW_RELIC_API_KEY'],cartapp_name,os.environ['TF_VAR_NEW_RELIC_ACCOUNT_ID'])
 nerdgraph_createkeytxn_cartapp(os.environ['TF_VAR_NEW_RELIC_API_KEY'])
-nerdgraph_getappguid(os.environ['TF_VAR_NEW_RELIC_API_KEY'],checkoutapp_name)
+nerdgraph_getappguid(os.environ['TF_VAR_NEW_RELIC_API_KEY'],checkoutapp_name,os.environ['TF_VAR_NEW_RELIC_ACCOUNT_ID'])
 nerdgraph_createkeytxn_checkoutapp(os.environ['TF_VAR_NEW_RELIC_API_KEY'])
-nerdgraph_getappguid(os.environ['TF_VAR_NEW_RELIC_API_KEY'],paymentapp_name)
+nerdgraph_getappguid(os.environ['TF_VAR_NEW_RELIC_API_KEY'],paymentapp_name,os.environ['TF_VAR_NEW_RELIC_ACCOUNT_ID'])
 nerdgraph_createkeytxn_paymentapp(os.environ['TF_VAR_NEW_RELIC_API_KEY'])
