@@ -195,6 +195,43 @@ resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
   }
 }
 
+resource "newrelic_nrql_alert_condition" "ms-demo-sl-compliance-condition" {
+  account_id                     = var.NEW_RELIC_ACCOUNT_ID
+  policy_id                      = newrelic_alert_policy.ms-demo-obs-alert-policy.id
+  type                           = "static"
+  name                           = "SLO Compliance"
+  description                    = "Alert when SL compliance drops below 95"
+  enabled                        = true
+  violation_time_limit_seconds   = 3600
+  fill_option                    = "static"
+  fill_value                     = 100
+  aggregation_window             = 60
+  aggregation_method             = "event_flow"
+  aggregation_delay              = 30
+  expiration_duration            = 120
+  open_violation_on_expiration   = true
+  close_violations_on_expiration = true
+  slide_by                       = 30
+
+  nrql {
+    query = "FROM Metric SELECT clamp_max(sum(newrelic.sli.good) / sum(newrelic.sli.valid) * 100, 100) as 'SLO compliance' FACET sli.guid"
+  }
+
+  critical {
+    operator              = "below"
+    threshold             = 90
+    threshold_duration    = 120
+    threshold_occurrences = "ALL"
+  }
+
+  warning {
+    operator              = "below"
+    threshold             = 95
+    threshold_duration    = 120
+    threshold_occurrences = "ALL"
+  }
+}
+
 resource "newrelic_nrql_alert_condition" "ms-demo-pod-stability-condition" {
   account_id                     = var.NEW_RELIC_ACCOUNT_ID
   policy_id                      = newrelic_alert_policy.ms-demo-obs-alert-policy.id
