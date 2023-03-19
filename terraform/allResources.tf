@@ -155,7 +155,7 @@ resource "newrelic_service_level" "ms-demo-productcatalogservice-error-sl" {
 
 
 resource "newrelic_alert_policy" "ms-demo-obs-alert-policy" {
-  name = "Online Boutique - Latency & K8S Stability Alerts"
+  name = "Online Boutique All Alerts"
 }
 
 resource "newrelic_nrql_alert_condition" "ms-demo-latency-condition" {
