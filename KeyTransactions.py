@@ -3,6 +3,8 @@ import json
 import os
 
 app_guid = ""
+endpoint = "https://api.eu.newrelic.com/graphql" if os.environ['TF_VAR_NEW_RELIC_REGION'] == "EU" else  "https://api.newrelic.com/graphql"
+
 
 def nerdgraph_createkeytxn_cartapp(key):
   # GraphQL query to NerdGraph
@@ -21,7 +23,6 @@ def nerdgraph_createkeytxn_cartapp(key):
    }
    }"""
 
-  endpoint = "https://api.newrelic.com/graphql"
   headers = {'API-Key': f'{key}'}
   response = requests.post(endpoint, headers=headers, json={"query": query})
 
@@ -50,7 +51,6 @@ def nerdgraph_createkeytxn_checkoutapp(key):
    }
    }"""
 
-  endpoint = "https://api.newrelic.com/graphql"
   headers = {'API-Key': f'{key}'}
   response = requests.post(endpoint, headers=headers, json={"query": query})
 
@@ -79,7 +79,6 @@ def nerdgraph_createkeytxn_paymentapp(key):
    }
    }"""
 
-  endpoint = "https://api.newrelic.com/graphql"
   headers = {'API-Key': f'{key}'}
   response = requests.post(endpoint, headers=headers, json={"query": query})
 
@@ -109,7 +108,6 @@ def nerdgraph_getappguid(key,appName,accountId):
   }
 }"""
 
-  endpoint = "https://api.newrelic.com/graphql"
   headers = {'API-Key': f'{key}'}
   response = requests.post(endpoint, headers=headers, json={"query": query})
 
