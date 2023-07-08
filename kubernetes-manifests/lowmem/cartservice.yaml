@@ -60,9 +60,10 @@ spec:
             cpu: 75m
             memory: 250Mi
         startupProbe:
+          initialDelaySeconds: 120
           failureThreshold: 30
-          periodSeconds: 40
-          timeoutSeconds: 180
+          periodSeconds: 120
+          timeoutSeconds: 60
           grpc:
             port: 7070
         readinessProbe:
