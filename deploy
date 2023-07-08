@@ -7,6 +7,7 @@ fi
 
 IMAGES=$@
 NAMESPACE=store
+MANIFESTS="${MANIFESTS:-kubernetes-manifests}"
 
 if [ -z "$IMAGES" ]; then
 	IMAGES="redis adservice cartservice checkoutservice currencyservice emailservice frontend paymentservice productcatalogservice recommendationservice shippingservice loadgenerator"
@@ -27,5 +28,5 @@ fi
 for SERVICE in $IMAGES
 do
   echo Deploying $SERVICE
-  kubectl -n store apply -f kubernetes-manifests/$SERVICE.yaml
+  kubectl -n store apply -f $MANIFESTS/$SERVICE.yaml
 done
