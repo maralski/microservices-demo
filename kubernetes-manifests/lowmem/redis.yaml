@@ -51,11 +51,11 @@ spec:
           name: redis-data
         resources:
           limits:
-            memory: 30Mi
+            memory: 50Mi
             cpu: 20m
           requests:
             cpu: 10m
-            memory: 15Mi
+            memory: 30Mi
       volumes:
       - name: redis-data
         emptyDir: {}
