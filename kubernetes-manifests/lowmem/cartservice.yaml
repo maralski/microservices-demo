@@ -61,8 +61,7 @@ spec:
             memory: 250Mi
         startupProbe:
           failureThreshold: 30
-          periodSeconds: 30
-          timeoutSeconds: 10
+          periodSeconds: 40
           grpc:
             port: 7070
         readinessProbe:
