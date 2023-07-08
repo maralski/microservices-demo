@@ -33,6 +33,7 @@ spec:
         startupProbe:
           failureThreshold: 30
           periodSeconds: 40
+          timeoutSeconds: 30
           tcpSocket:
             port: 6379
         readinessProbe:

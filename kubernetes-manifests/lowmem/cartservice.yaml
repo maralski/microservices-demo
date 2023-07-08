@@ -62,6 +62,7 @@ spec:
         startupProbe:
           failureThreshold: 30
           periodSeconds: 40
+          timeoutSeconds: 30
           grpc:
             port: 7070
         readinessProbe:
