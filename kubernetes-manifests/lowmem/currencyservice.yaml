@@ -1,0 +1,82 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currencyservice
+spec:
+  selector:
+    matchLabels:
+      app: currencyservice
+  template:
+    metadata:
+      labels:
+        app: currencyservice
+      annotations:
+        fluentbit.io/exclude: "true"
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: currencyservice
+        image: pmarelas288/currencyservice
+        ports:
+        - name: grpc
+          containerPort: 7000
+        env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: NEW_RELIC_APP_NAME
+          value: "store-currencyservice"
+        - name: NEW_RELIC_LOG
+          value: "stdout"
+        - name: NEW_RELIC_LOG_LEVEL
+          value: "debug"
+        - name: NEW_RELIC_NO_CONFIG_FILE
+          value: "true"
+        - name: PORT
+          value: "7000"
+        startupProbe:
+          failureThreshold: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          grpc:
+            port: 7000
+        readinessProbe:
+          periodSeconds: 30
+          timeoutSeconds: 10
+          grpc:
+            port: 7000
+        livenessProbe:
+          periodSeconds: 30
+          timeoutSeconds: 10
+          grpc:
+            port: 7000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: currencyservice
+spec:
+  type: ClusterIP
+  selector:
+    app: currencyservice
+  ports:
+  - name: grpc
+    port: 7000
+    targetPort: 7000
