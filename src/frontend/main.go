@@ -38,7 +38,7 @@ const (
 	cookiePrefix      = "shop_"
 	cookieSessionID   = cookiePrefix + "session-id"
 	cookieCurrency    = cookiePrefix + "currency"
-	waitForConnection = 5
+	waitForConnection = 30
 )
 
 var (

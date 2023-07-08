@@ -40,7 +40,7 @@ import (
 const (
 	listenPort        = "5050"
 	usdCurrency       = "USD"
-	waitForConnection = 5
+	waitForConnection = 30
 )
 
 var log *logrus.Logger

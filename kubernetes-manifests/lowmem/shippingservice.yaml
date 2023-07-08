@@ -49,8 +49,7 @@ spec:
           value: "50051"
         startupProbe:
           failureThreshold: 30
-          periodSeconds: 30
-          timeoutSeconds: 10
+          periodSeconds: 40
           grpc:
             port: 50051
         readinessProbe:

@@ -55,7 +55,7 @@ var (
 )
 
 const (
-	waitForConnection = 5
+	waitForConnection = 30
 )
 
 func main() {

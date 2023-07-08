@@ -37,7 +37,7 @@ import (
 
 const (
 	defaultPort       = "50051"
-	waitForConnection = 5
+	waitForConnection = 30
 )
 
 var log *logrus.Logger
