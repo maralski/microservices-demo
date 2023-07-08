@@ -54,11 +54,11 @@ spec:
           value: "redis-cart:6379"
         resources:
           requests:
-            cpu: 25m
-            memory: 150Mi
-          limits:
             cpu: 50m
             memory: 200Mi
+          limits:
+            cpu: 75m
+            memory: 250Mi
         startupProbe:
           failureThreshold: 30
           periodSeconds: 30

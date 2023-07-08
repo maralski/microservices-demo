@@ -77,11 +77,11 @@ spec:
               port: 5050            
           resources:
             requests:
-              cpu: 5m
-              memory: 30Mi
-            limits:
               cpu: 10m
-              memory: 40Mi
+              memory: 50Mi
+            limits:
+              cpu: 20m
+              memory: 75Mi
 ---
 apiVersion: v1
 kind: Service
