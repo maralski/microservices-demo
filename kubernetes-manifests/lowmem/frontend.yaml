@@ -89,6 +89,13 @@ spec:
             value: "checkoutservice:5050"
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
+          resources:
+            requests:
+              cpu: 40m
+              memory: 30Mi
+            limits:
+              cpu: 50m
+              memory: 40Mi
 ---
 apiVersion: v1
 kind: Service

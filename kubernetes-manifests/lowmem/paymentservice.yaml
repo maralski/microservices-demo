@@ -66,6 +66,13 @@ spec:
           timeoutSeconds: 10
           grpc:
             port: 50051
+        resources:
+          requests:
+            cpu: 15m
+            memory: 40Mi
+          limits:
+            cpu: 20m
+            memory: 50Mi
 ---
 apiVersion: v1
 kind: Service

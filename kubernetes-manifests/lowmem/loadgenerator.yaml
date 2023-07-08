@@ -73,3 +73,10 @@ spec:
           value: "frontend:8081"
         - name: USERS
           value: "10"
+        resources:
+          requests:
+            cpu: 10m
+            memory: 40Mi
+          limits:
+            cpu: 15m
+            memory: 50Mi

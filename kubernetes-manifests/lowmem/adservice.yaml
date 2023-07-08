@@ -56,6 +56,13 @@ spec:
           value: "-javaagent:/app/newrelic/newrelic.jar"
         ports:
         - containerPort: 9555
+        resources:
+          requests:
+            cpu: 25m
+            memory: 250Mi
+          limits:
+            cpu: 50m
+            memory: 300Mi
         startupProbe:
           failureThreshold: 30
           periodSeconds: 30
