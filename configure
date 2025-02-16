@@ -5,7 +5,7 @@ import os
 import sys
 import requests
 
-base_dir = "/root"
+base_dir = os.getcwd()
 conf_file = f".conf.env"
 github_repo_url = "https://github.com/maralski/microservices-demo"
 github_target_dir = "microservices-demo"
@@ -32,7 +32,7 @@ def load_env(filename):
                     os.environ["NEW_RELIC_REGION"] = line.split("=")[1].strip()
 
 rerun = False
-if os.path.exists("/etc/setupcomplete"):
+if os.path.exists(f"{base_dir}/setupcomplete"):
     print("\nIt looks like setup has already been completed.\n")
     while rerun is False:
             rerun = input(f"Enter {bold}yes{unbold} to re-run setup, or {bold}no{unbold} to exit: ").strip().lower()
@@ -126,7 +126,7 @@ print(f"\n{bold}Starting New Relic setup...{unbold}")
 load_env(conf_file)
 
 # Download and install New Relic CLI
-if not os.path.exists("/etc/status_nr_cli_done"):
+if not os.path.exists(f"{base_dir}/status_nr_cli_done"):
     print("\nDownloading New Relic CLI")
     install_cli_url = "https://download.newrelic.com/install/newrelic-cli/scripts/install.sh"
     response = requests.get(install_cli_url)
@@ -136,44 +136,44 @@ if not os.path.exists("/etc/status_nr_cli_done"):
     result = os.system("./install.sh")
     if result == 0:
         print("Installation of New Relic CLI successful")
-        open("/etc/status_nr_cli_done", "w").close()
+        open(f"{base_dir}/status_nr_cli_done", "w").close()
     else:
         print("Installation of New Relic CLI failed")
         print("Please investigate the issue and re-run this process")
         sys.exit(1)
 
 # Install New Relic Kubernetes integration
-if not os.path.exists("/etc/status_nr_k8s_done"):
+if not os.path.exists(f"{base_dir}/status_nr_k8s_done"):
     print("\nInstalling New Relic Kubernetes integration")
     result = os.system(f"NEW_RELIC_CLI_SKIP_CORE=1 NR_CLI_CLUSTERNAME={cluster_name} NR_CLI_NAMESPACE={cluster_nr_namespace} NR_CLI_PRIVILEGED=true NR_CLI_LOW_DATA_MODE=true NR_CLI_KSM=true NR_CLI_KUBE_EVENTS=true NR_CLI_PROMETHEUS_AGENT=true NR_CLI_PROMETHEUS_AGENT_LOW_DATA_MODE=true NR_CLI_CURATED=true NEW_RELIC_API_KEY={os.environ['NEW_RELIC_API_KEY']} NEW_RELIC_ACCOUNT_ID={os.environ['NEW_RELIC_ACCOUNT_ID']} /usr/local/bin/newrelic install -n kubernetes-open-source-integration 2>&1")
     if result == 0:
         print("Installation of New Relic Kubernetes integration successful")
-        open("/etc/status_nr_k8s_done", "w").close()
+        open(f"{base_dir}/status_nr_k8s_done", "w").close()
     else:
         print("Installation of New Relic Kubernetes integration failed")
         print("Please investigate the issue and re-run this process")
         sys.exit(1)
 
 # Clone github repo
-if not os.path.exists("/etc/status_github_clone_done"):
+if not os.path.exists(f"{base_dir}/status_github_clone_done"):
     print("\nCloning github repo containing microservices-demo")
     result = os.system(f"git clone {github_repo_url} {github_target_dir}")
     if result == 0:
         print("Cloning of github repo successful")
-        open("/etc/status_github_clone_done", "w").close()
+        open(f"{base_dir}/status_github_clone_done", "w").close()
     else:
         print("Cloning of github repo failed")
         print("Please investigate the issue and re-run this process")
         sys.exit(1)
 
 # Deploy microservices to Kubernetes
-if not os.path.exists("/etc/status_microservices_deployed"):
+if not os.path.exists(f"{base_dir}/status_microservices_deployed"):
     print("\nDeploying microservices to Kubernetes cluster")
     os.chdir(f"{base_dir}/{github_target_dir}")
     result = os.system("./deploy")
     if result == 0:
         print("Deployment of microservices successful")
-        open("/etc/status_microservices_deployed", "w").close()
+        open(f"{base_dir}/status_microservices_deployed", "w").close()
     else:
         print("Deployment of microservices failed")
         print("Please investigate the issue and re-run this process")
@@ -195,13 +195,13 @@ os.environ["TF_VAR_NEW_RELIC_ACCOUNT_ID"] = os.environ["NEW_RELIC_ACCOUNT_ID"]
 os.environ["TF_VAR_NEW_RELIC_API_KEY"] = os.environ["NEW_RELIC_API_KEY"]
 
 # Setup New Relic Key Transactions
-if not os.path.exists("/etc/status_nr_key_transactions_done"):
+if not os.path.exists(f"{base_dir}/status_nr_key_transactions_done"):
     print("\nSetting up New Relic Key Transactions")
     os.chdir(f"{base_dir}/{github_target_dir}")
     result = os.system("python3 KeyTransactions.py")
     if result == 0:
         print("Key Transactions setup successful")
-        open("/etc/status_nr_key_transactions_done", "w").close()
+        open(f"{base_dir}/status_nr_key_transactions_done", "w").close()
     else:
         print("Key Transactions setup failed")
         print("Please investigate the issue and re-run this process")
@@ -209,25 +209,25 @@ if not os.path.exists("/etc/status_nr_key_transactions_done"):
         sys.exit(1)
 
 # Setup New Relic with Terraform
-if not os.path.exists("/etc/status_nr_terraform_init_done"):
+if not os.path.exists(f"{base_dir}/status_nr_terraform_init_done"):
     print("\nSetting up New Relic Workloads, SLOs and Alerts with Terraform")
     os.chdir(f"{base_dir}/{github_target_dir}/terraform")
     result = os.system("terraform init")
     if result == 0:
         print("Terraform init successful")
-        open("/etc/status_nr_terraform_init_done", "w").close()
+        open(f"{base_dir}/status_nr_terraform_init_done", "w").close()
     else:
         print("Terraform init failed")
         print("Please investigate the issue and re-run this process")
         os.chdir(base_dir)
         sys.exit(1)
 
-if not os.path.exists("/etc/status_nr_terraform_apply_done"):
+if not os.path.exists(f"{base_dir}/status_nr_terraform_apply_done"):
     os.chdir(f"{base_dir}/{github_target_dir}/terraform")
     result = os.system("terraform apply -auto-approve")
     if result == 0:
         print("Terraform apply successful")
-        open("/etc/status_nr_terraform_apply_done", "w").close()
+        open(f"{base_dir}/status_nr_terraform_apply_done", "w").close()
     else:
         print("Terraform apply failed")
         print("Please investigate the issue and re-run this process")
@@ -235,7 +235,7 @@ if not os.path.exists("/etc/status_nr_terraform_apply_done"):
         sys.exit(1)
 
 # Touch file to indicate that setup has been completed
-open("/etc/setupcomplete", "w").close()
+open(f"{base_dir}/setupcomplete", "w").close()
 
 print(f"\n{bold}New Relic setup completed successfully...{unbold}")
 

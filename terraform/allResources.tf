@@ -51,7 +51,7 @@ resource "newrelic_service_level" "ms-demo-productcatalogservice-latency-sl" {
         }
         good_events {
             from = "Transaction"
-            where = "appName = 'store-productcatalogservice' AND (transactionType= 'Web') AND duration < 0.05"
+            where = "appName = 'store-productcatalogservice' AND (transactionType= 'Web') AND duration < 0.9"
         }
     }
 
@@ -79,7 +79,7 @@ resource "newrelic_service_level" "ms-demo-frontend-latency-sl" {
         }
         good_events {
             from = "Transaction"
-            where = "appName = 'store-frontend' AND (transactionType= 'Web') AND duration < 0.05"
+            where = "appName = 'store-frontend' AND (transactionType= 'Web') AND duration < 0.10"
         }
     }
 
@@ -211,7 +211,7 @@ resource "newrelic_nrql_alert_condition" "ms-demo-sl-compliance-condition" {
   slide_by                       = 30
 
   nrql {
-    query = "FROM Metric SELECT clamp_max(sum(newrelic.sli.good) / sum(newrelic.sli.valid) * 100, 100) as 'SLO compliance' FACET sli.guid"
+    query = "FROM Metric SELECT clamp_max((if(count(newrelic.sli.good), sum(newrelic.sli.good), (sum(newrelic.sli.valid) - sum(newrelic.sli.bad))) / sum(newrelic.sli.valid)) * 100, 100) AS 'SLO compliance' FACET entity.guid"
   }
 
   critical {
@@ -351,7 +351,7 @@ resource "newrelic_service_level" "ms-demo-additem-latency-sl" {
         }
         good_events {
             from = "Transaction"
-            where = "name = 'WebTransaction/ASP/hipstershop.CartService/AddItem' AND duration < 0.005"
+            where = "name = 'WebTransaction/ASP/hipstershop.CartService/AddItem' AND duration < 0.03"
         }
     }
 
