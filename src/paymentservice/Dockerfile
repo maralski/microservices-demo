@@ -12,16 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM node:19.3.0-alpine@sha256:d0b02b1ec5534efb43a926069915c982aec745a8eb0611ebcffc4cafaa4e4a74 as base
+FROM node:22.14.0-alpine@sha256:9bef0ef1e268f60627da9ba7d7605e8831d5b56ad07487d24d1aa386336d1944 as base
 
 FROM base as builder
-
-# Some packages (e.g. @google-cloud/profiler) require additional
-# deps for post-install scripts
-RUN apk add --update --no-cache \
-    python3 \
-    make \
-    g++ 
 
 WORKDIR /usr/src/app
 
@@ -39,7 +32,7 @@ COPY . .
 
 EXPOSE 50051
 
-ENTRYPOINT [ "node", "-r", "newrelic", "index.js" ]
+ENTRYPOINT [ "node", "--max-old-space-size=40", "-r", "newrelic", "index.js" ]
 
 FROM without-grpc-health-probe-bin
 

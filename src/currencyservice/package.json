@@ -8,12 +8,12 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "newrelic": "9.10.2",
-    "@grpc/grpc-js": "1.8.4",
-    "@grpc/proto-loader": "0.7.4",
-    "async": "3.2.4",
-    "google-protobuf": "3.21.2",
-    "pino": "8.8.0",
-    "xml2js": "0.4.23"
+    "newrelic": "12.13.0",
+    "@grpc/grpc-js": "1.12.6",
+    "@grpc/proto-loader": "0.7.13",
+    "async": "3.2.6",
+    "google-protobuf": "3.21.4",
+    "pino": "9.6.0",
+    "xml2js": "0.6.2"
   }
 }
