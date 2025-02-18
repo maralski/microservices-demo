@@ -31,8 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: currencyservice
-        image: pmarelas288/currencyservice
-        imagePullPolicy: Always
+        image: pmarelas288/currencyservice:nr-product-1.0.0
         ports:
         - name: grpc
           containerPort: 7000
