@@ -32,6 +32,7 @@ spec:
       containers:
       - name: emailservice
         image: pmarelas288/emailservice
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
