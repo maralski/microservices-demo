@@ -30,8 +30,7 @@ spec:
       serviceAccountName: default
       containers:
       - name: shippingservice
-        image: pmarelas288/shippingservice
-        imagePullPolicy: Always
+        image: pmarelas288/shippingservice:nr-product-1.0.0
         ports:
         - containerPort: 50051
         env:
