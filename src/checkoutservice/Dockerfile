@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.19.5-alpine@sha256:3183b343d01a6e8c9bee7b7c4eb7208518e68dc0cdac8623e1575820342472ed as builder
+FROM golang:1.23.0-alpine AS builder
 RUN apk add --no-cache ca-certificates git
 RUN apk add build-base
 WORKDIR /src
 
 # restore dependencies
+#COPY go.mod go.sum ./
 COPY go.mod go.sum ./
 RUN go mod download
 
@@ -27,12 +28,9 @@ RUN go get github.com/newrelic/go-agent/v3/newrelic
 RUN go get github.com/newrelic/go-agent/v3/integrations/nrgrpc
 RUN go get github.com/newrelic/go-agent/v3/integrations/nrpkgerrors
 RUN go get github.com/newrelic/go-agent/v3/integrations/logcontext-v2/nrlogrus
+RUN go build -o /checkoutservice .
 
-# Skaffold passes in debug-oriented compiler flags
-ARG SKAFFOLD_GO_GCFLAGS
-RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /checkoutservice .
-
-FROM alpine:3.17.1@sha256:f271e74b17ced29b915d351685fd4644785c6d1559dd1f2d4189a5e851ef753a as without-grpc-health-probe-bin
+FROM alpine:3.21.3 AS base
 RUN apk add --no-cache ca-certificates
 
 WORKDIR /src
@@ -45,9 +43,3 @@ ENV GOTRACEBACK=single
 
 EXPOSE 5050
 ENTRYPOINT ["/src/checkoutservice"]
-
-FROM without-grpc-health-probe-bin
-# renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
-    chmod +x /bin/grpc_health_probe
