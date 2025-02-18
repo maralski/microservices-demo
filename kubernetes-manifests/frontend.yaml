@@ -30,8 +30,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: frontend
-          image: pmarelas288/frontend
-          imagePullPolicy: Always
+          image: pmarelas288/frontend:nr-product-1.0.0
           ports:
           - containerPort: 8080
           startupProbe:
