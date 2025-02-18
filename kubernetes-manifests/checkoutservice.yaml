@@ -30,8 +30,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: checkoutservice
-          image: pmarelas288/checkoutservice
-          imagePullPolicy: Always
+          image: pmarelas288/checkoutservice:nr-product-1.0.0
           ports:
           - containerPort: 5050
           env:
