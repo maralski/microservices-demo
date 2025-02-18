@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$BUILDPLATFORM python:3.12.8@sha256:e74938514dc67ad3eade8798aa929f5dd569e463758c83243636d4e1b54aa559 AS base
+FROM python:3.12.8@sha256:e74938514dc67ad3eade8798aa929f5dd569e463758c83243636d4e1b54aa559 AS base
 
 FROM base AS builder
 
@@ -43,7 +43,7 @@ ENV NEWRELIC_AGENT_VERSION=${NEWRELIC_AGENT_VERSION:-10.6.0}
 RUN pip install newrelic==$NEWRELIC_AGENT_VERSION
 
 # set listen port
-ENV PORT "8080"
+ENV PORT="8080"
 EXPOSE 8080
 
 ENTRYPOINT ["python", "recommendation_server.py"]
