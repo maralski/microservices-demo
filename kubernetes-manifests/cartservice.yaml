@@ -31,8 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: cartservice
-        image: pmarelas288/cartservice
-        imagePullPolicy: Always
+        image: pmarelas288/cartservice:nr-product-1.0.0
         ports:
         - containerPort: 7070
         env:
