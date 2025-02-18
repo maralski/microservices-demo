@@ -32,6 +32,7 @@ spec:
       containers:
       - name: currencyservice
         image: pmarelas288/currencyservice
+        imagePullPolicy: Always
         ports:
         - name: grpc
           containerPort: 7000

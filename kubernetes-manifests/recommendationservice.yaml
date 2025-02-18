@@ -32,6 +32,7 @@ spec:
       containers:
       - name: recommendationservice
         image: pmarelas288/recommendationservice
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:

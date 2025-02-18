@@ -68,6 +68,7 @@ spec:
           privileged: false
           readOnlyRootFilesystem: true
         image: pmarelas288/loadgenerator
+        imagePullPolicy: Always
         env:
         - name: FRONTEND_ADDR
           value: "frontend:8081"

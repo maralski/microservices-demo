@@ -32,6 +32,7 @@ spec:
       containers:
       - name: productcatalogservice
         image: pmarelas288/productcatalogservice
+        imagePullPolicy: Always
         ports:
         - containerPort: 3550
         env:

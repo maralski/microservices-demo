@@ -31,6 +31,7 @@ spec:
       containers:
         - name: frontend
           image: pmarelas288/frontend
+          imagePullPolicy: Always
           ports:
           - containerPort: 8080
           startupProbe:

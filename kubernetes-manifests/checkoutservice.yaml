@@ -31,6 +31,7 @@ spec:
       containers:
         - name: checkoutservice
           image: pmarelas288/checkoutservice
+          imagePullPolicy: Always
           ports:
           - containerPort: 5050
           env:
