@@ -22,7 +22,7 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-FROM base as without-grpc-health-probe-bin
+FROM base
 
 WORKDIR /usr/src/app
 
@@ -33,10 +33,3 @@ COPY . .
 EXPOSE 50051
 
 ENTRYPOINT [ "node", "--max-old-space-size=40", "-r", "newrelic", "index.js" ]
-
-FROM without-grpc-health-probe-bin
-
-# renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
-    chmod +x /bin/grpc_health_probe
