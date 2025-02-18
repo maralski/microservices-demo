@@ -31,8 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: recommendationservice
-        image: pmarelas288/recommendationservice
-        imagePullPolicy: Always
+        image: pmarelas288/recommendationservice:nr-product-1.0.0
         ports:
         - containerPort: 8080
         env:
