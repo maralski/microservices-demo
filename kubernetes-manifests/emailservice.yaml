@@ -31,8 +31,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: emailservice
-        image: pmarelas288/emailservice
-        imagePullPolicy: Always
+        image: pmarelas288/emailservice:nr-product-1.0.0
         ports:
         - containerPort: 8080
         env:
