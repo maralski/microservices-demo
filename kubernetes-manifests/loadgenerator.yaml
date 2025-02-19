@@ -67,8 +67,7 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: pmarelas288/loadgenerator
-        imagePullPolicy: Always
+        image: pmarelas288/loadgenerator:nr-product-1.0.0
         env:
         - name: FRONTEND_ADDR
           value: "frontend:8081"
