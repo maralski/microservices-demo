@@ -3,6 +3,7 @@
 CURRENT=$PWD
 REPO=pmarelas288
 IMAGES=$@
+TAG=${TAG:-latest}
 
 if [ -z "$IMAGES" ]; then
 	IMAGES="loadgenerator loadgeneratorredis adservice cartservice checkoutservice currencyservice emailservice frontend loadgenerator paymentservice productcatalogservice recommendationservice shippingservice"
@@ -10,13 +11,13 @@ fi
 
 for SERVICE in $IMAGES
 do
-	echo "##### Building $SERVICE #####"
+	echo "##### Building $SERVICE using $TAG #####"
 	cd $CURRENT
 	cd src/$SERVICE
-	docker build -t $REPO/$SERVICE .
+	docker build --no-cache -t $REPO/$SERVICE:$TAG .
 	if [ $? -ne 0 ]; then
 		echo "##### Failed to build $SERVICE #####"
 		exit 1
 	fi
-	docker push $REPO/$SERVICE
+	docker push $REPO/$SERVICE:$TAG
 done
